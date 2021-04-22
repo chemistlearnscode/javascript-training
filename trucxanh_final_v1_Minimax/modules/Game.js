@@ -116,8 +116,12 @@ export class Game extends Node {
                         // this.firstCover.active=true;
                         // this.secondCover.active=true;
                         this.score=this.score-100;
-                        this.firstCover.scaleX=1;
-                        this.secondCover.scaleX=1;
+                        // this.firstCover.scaleX=1;
+                        // this.secondCover.scaleX=1;
+                        gsap.to(this.secondCard,{ duration: 0.5, scaleX: 0});
+                        gsap.to(this.secondCover,{ duration: 0.5, scaleX: 1, delay: 0.5});
+                        gsap.to(this.firstCard,{ duration: 0.5, scaleX: 0});
+                        gsap.to(this.firstCover,{ duration: 0.5, scaleX: 1, delay: 0.5});
                     } else {
                         // this.firstCard.active=false;
                         // this.secondCard.active=false;
