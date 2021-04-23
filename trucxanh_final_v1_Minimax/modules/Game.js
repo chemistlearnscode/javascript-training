@@ -79,8 +79,8 @@ export class Game extends Node {
         for (var i=0;i<4;i++){
             for(var j=0;j<5;j++){
                var card = new Card(ar[index].src,index,ar[index].value);
-                card.x=j*125+150;
-                card.y=i*125+100;
+                card.x=j*125+180;
+                card.y=i*125+120;
                this.addChild(card);
                 index++;
                 card.on("mousedown", this.onClickCard.bind(this));
@@ -92,24 +92,29 @@ export class Game extends Node {
     onClickCard(evt) {
         var tl1 = gsap.timeline();
         let card = evt.target.node;
+        console.log(card);
         this.countClick++;
         if(  this.countClick === 1){
-            this.firstCard = card.children[0];
+            // this.firstCard = card.children[0];
+            this.firstCard = card;
             var firstIndex= card.index;
             this.firstCover= card.children[1];
-            this.firstCard.scaleX=0;
+            this.firstCard.children[0].scaleX=0;
             tl1.to(this.firstCover,{duration:0.5, scaleX: 0});
-            tl1.to(this.firstCard,{duration: 0.5, scaleX: 1});
+            this.firstCard.children[2].active = false;
+            tl1.to(this.firstCard.children[0],{duration: 0.5, scaleX: 1});
             // this.firstCover.active=false;
         }else if(this.countClick === 2){
             // compare
-            this.secondCard = card.children[0];
+            // this.secondCard = card.children[0];
+            this.secondCard = card;
             var secondIndex=card.index;
             this.secondCover = card.children[1];
             // this.secondCover.active=false;
-            this.secondCard.scaleX=0;
+            this.secondCard.children[0].scaleX=0;
             tl1.to(this.secondCover,{duration:0.5, scaleX: 0});
-            tl1.to(this.secondCard,{duration: 0.5, scaleX: 1});
+            tl1.to(this.secondCard.children[0],{duration: 0.5, scaleX: 1});
+            this.secondCard.children[2].active = false;
             if(firstIndex!==secondIndex){
                 setTimeout(()=>{
                     if(this.firstCard.value!=this.secondCard.value){
@@ -118,15 +123,17 @@ export class Game extends Node {
                         this.score=this.score-100;
                         // this.firstCover.scaleX=1;
                         // this.secondCover.scaleX=1;
-                        gsap.to(this.secondCard,{ duration: 0.5, scaleX: 0});
+                        gsap.to(this.secondCard.children[0],{ duration: 0.5, scaleX: 0});
                         gsap.to(this.secondCover,{ duration: 0.5, scaleX: 1, delay: 0.5});
-                        gsap.to(this.firstCard,{ duration: 0.5, scaleX: 0});
+                        gsap.to(this.firstCard.children[0],{ duration: 0.5, scaleX: 0});
                         gsap.to(this.firstCover,{ duration: 0.5, scaleX: 1, delay: 0.5});
+                        this.firstCard.children[2].active=true;
+                        this.secondCard.children[2].active=true;
                     } else {
                         // this.firstCard.active=false;
                         // this.secondCard.active=false;
-                        gsap.to(this.firstCard,{ duration:0.5, opacity: 0,scale: 1.5});
-                        gsap.to(this.secondCard, { duration: 0.5, opacity: 0, scale: 1.5});
+                        gsap.to(this.firstCard.children[0],{ duration:0.5, opacity: 0,scale: 1.5});
+                        gsap.to(this.secondCard.children[0], { duration: 0.5, opacity: 0, scale: 1.5});
                         this.score=this.score+500;
                     }
                     this.countClick=0;
