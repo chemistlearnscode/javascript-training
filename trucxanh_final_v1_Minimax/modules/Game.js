@@ -91,31 +91,35 @@ export class Game extends Node {
 
     onClickCard(evt) {
         var tl1 = gsap.timeline();
+        var tl2 = gsap.timeline();
         let card = evt.target.node;
         console.log(card);
+        console.log(card.index);
         this.countClick++;
         if(  this.countClick === 1){
             // this.firstCard = card.children[0];
             this.firstCard = card;
-            var firstIndex= card.index;
+            // var firstIndex= card.index;
             this.firstCover= card.children[1];
             this.firstCard.children[0].scaleX=0;
-            tl1.to(this.firstCover,{duration:0.5, scaleX: 0});
-            this.firstCard.children[2].active = false;
+            tl2.to(this.firstCard.children[2],{duration: 0.3, scaleX: 0});
+            tl1.to(this.firstCover,{duration:0.3, scaleX: 0});
+            // this.firstCard.children[2].active = false;
             tl1.to(this.firstCard.children[0],{duration: 0.5, scaleX: 1});
             // this.firstCover.active=false;
         }else if(this.countClick === 2){
             // compare
             // this.secondCard = card.children[0];
             this.secondCard = card;
-            var secondIndex=card.index;
+            // var secondIndex=card.index;
             this.secondCover = card.children[1];
             // this.secondCover.active=false;
             this.secondCard.children[0].scaleX=0;
-            tl1.to(this.secondCover,{duration:0.5, scaleX: 0});
+            tl2.to(this.secondCard.children[2],{ duration: 0.3, scaleX: 0});
+            tl1.to(this.secondCover,{duration:0.3, scaleX: 0});
             tl1.to(this.secondCard.children[0],{duration: 0.5, scaleX: 1});
-            this.secondCard.children[2].active = false;
-            if(firstIndex!==secondIndex){
+            // this.secondCard.children[2].active = false;
+            if (this.firstCard.index!==this.secondCard.index) {
                 setTimeout(()=>{
                     if(this.firstCard.value!=this.secondCard.value){
                         // this.firstCover.active=true;
@@ -127,8 +131,8 @@ export class Game extends Node {
                         gsap.to(this.secondCover,{ duration: 0.5, scaleX: 1, delay: 0.5});
                         gsap.to(this.firstCard.children[0],{ duration: 0.5, scaleX: 0});
                         gsap.to(this.firstCover,{ duration: 0.5, scaleX: 1, delay: 0.5});
-                        this.firstCard.children[2].active=true;
-                        this.secondCard.children[2].active=true;
+                        gsap.to(this.firstCard.children[2],{ duration: 0.5, scaleX: 1, delay: 0.5});
+                        gsap.to(this.secondCard.children[2],{ duration: 0.5, scaleX: 1, delay: 0.5});
                     } else {
                         // this.firstCard.active=false;
                         // this.secondCard.active=false;
@@ -139,11 +143,17 @@ export class Game extends Node {
                     this.countClick=0;
                 },1000)
             } else{
+                // return;
+                this.countClick =1;
             }
         }
         // console.log(card);
         console.log(this.score);
     }
+
+    // onClickCard(index,value){
+
+    // }
 
     _initShowScore(){
         let score = new Label("Arial","50px","Green");

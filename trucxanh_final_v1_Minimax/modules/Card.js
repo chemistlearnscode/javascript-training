@@ -42,6 +42,7 @@ export class Card extends Node {
         img.value=this.value;
         img.width=100;
         img.height=100;
+        img.elm.node=this;
         this.addChild(img);
     }
 
@@ -50,6 +51,7 @@ export class Card extends Node {
         no.text=this.index+1;
         no.x=this.width/2 -15;
         no.y=this.height/2 -15;
+        no.elm.node=this;
         this.addChild(no);
     }
 }
