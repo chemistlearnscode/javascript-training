@@ -24,8 +24,8 @@ export class Game extends Node {
         this._initBackground();
         this._initLabel();
         this._initShowScore();
-        this._shuffleArray(generateArr())
-        this._initCards();
+        this._initStart();
+        
 
       
     }
@@ -47,6 +47,25 @@ export class Game extends Node {
         bg.width = 1000;
         bg.height = 700;
         this.addChild(bg);
+    }
+
+    _initStart(){
+        var startBtn = new Sprite("./img/startbutton.png");
+        startBtn.width = 300;
+        startBtn.height = 150;
+        startBtn.x= 350;
+        startBtn.y = 225;
+        this.addChild(startBtn);
+        startBtn.on("mousedown",this.playGame.bind(this));
+
+    }
+
+    playGame(evt){
+        evt.target.style.display = 'none';
+        this._initAudio();
+        this._shuffleArray(generateArr())
+        this._initCards();
+        this._initRestart();
     }
 
     _initLabel() {
@@ -127,6 +146,8 @@ export class Game extends Node {
         var tl1 = gsap.timeline();
         var tl2 = gsap.timeline();
         let card = evt.target.node;
+        var clickSound = new Audio("./audio/clicksound.mp3");
+        clickSound.play();
         // console.log(card);
         // console.log(card.index);
         this.countClick++;
@@ -161,6 +182,7 @@ export class Game extends Node {
 
                         let oldScore = this.score;
                         this.score = this.score - 100;
+                        var ohsound = new Audio("./audio/oh-no.mp3");
 
                         this.updateScore(oldScore);
                         // this.firstCover.scaleX=1;
@@ -171,6 +193,7 @@ export class Game extends Node {
                         gsap.to(this.firstCover, { duration: 0.5, scaleX: 1, delay: 0.5 });
                         gsap.to(this.firstCard.children[2], { duration: 0.5, scaleX: 1, delay: 0.5 });
                         gsap.to(this.secondCard.children[2], { duration: 0.5, scaleX: 1, delay: 0.5 });
+                        ohsound.play();
                     } else {
                         // this.firstCard.active=false;
                         // this.secondCard.active=false;
@@ -180,7 +203,9 @@ export class Game extends Node {
                         let oldScore = this.score;
                         this.score = this.score + 500;
                         this._match++;
-                        console.log(this._match);
+                        // console.log(this._match);
+                        let waowSound = new Audio("./audio/waow.mp3")
+                        waowSound.play();
 
                         this.updateScore(oldScore);
                     }
@@ -259,6 +284,25 @@ export class Game extends Node {
                 this.children[i].active = false;
             }
         }
+    }
+
+    _initRestart(){
+        const restart = new Sprite("./img/restart.png");
+        restart.x=0;
+        restart.y=0;
+        restart.width=100;
+        restart.height=50;
+        this.addChild(restart);
+        restart.on("mousedown", this.onRestartGame.bind(this));
+    }
+
+    onRestartGame(evt) {
+        location.reload();
+    }
+
+    _initAudio(){
+        var initMusic = new Audio("./audio/startmusic.mp3");
+        initMusic.play();
     }
 
 }
